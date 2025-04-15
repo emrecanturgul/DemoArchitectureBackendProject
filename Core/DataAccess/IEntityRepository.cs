@@ -16,3 +16,4 @@ namespace Core.DataAccess
         T Get(Expression<Func<T,bool>> filter);
     }
 }
+    
