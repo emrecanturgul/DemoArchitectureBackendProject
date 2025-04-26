@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Result.Abstract;
+using Core.Utilities.Result.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Core.Utilities.Business
                     return logic;
                 }
             }
-            return null; 
+            return new SuccessResult(); 
         }
     }
 }

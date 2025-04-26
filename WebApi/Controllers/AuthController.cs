@@ -1,5 +1,5 @@
-﻿using Business.Abstract;
-using DataAccess.Abstract;
+﻿using Business.Authentication;
+using Business.Repositories.OperationClaimRepository;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +17,7 @@ namespace WebApi.Controllers
                 _authService = authService;
             }
             [HttpPost("register")]
-            public IActionResult Register(RegisterAuthDto authDto)
+            public IActionResult Register([FromForm]RegisterAuthDto authDto)
             {
                 var result = _authService.Register(authDto);
                 if(result.Success == true)

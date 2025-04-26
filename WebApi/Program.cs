@@ -1,9 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Business.Abstract;
+using Business.Repositories.OperationClaimRepository;
 using Business.Concrete;
 using Business.DependencyResolvers.Autofac;
-using DataAccess.Abstract;
+using DataAccess.Repositories.OperationClaimRepository;
 using DataAccess.Concrete.EntityFramework;
 using System.ComponentModel;
 
