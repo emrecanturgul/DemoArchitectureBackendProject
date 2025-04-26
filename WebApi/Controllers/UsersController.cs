@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using Business.Repositories.OperationClaimRepository;
+using Business.Repositories.UserRepository;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -19,15 +20,55 @@ namespace WebApi.Controllers
         [HttpGet("getlist")]
         public IActionResult GetList()
         {
-            return Ok(_userService.GetList());
+            var result = _userService.GetList();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result); 
         }
-        [HttpDelete("delete")]
-        public IActionResult Delete(LoginAuthDto loginDto)
+        [HttpGet("getbyId")] 
+        public IActionResult GetById(int userId)
         {
-            _userService.Delete(loginDto);
-            return Ok();
-        } 
+            var result = _userService.GetById(userId);
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message); 
+        }
+        [HttpPost("update")] 
+        public IActionResult Update(User user) 
+        {
+            var result = _userService.Update(user); 
+            if(result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result);
+        }
 
+        [HttpPost("delete")]
+        public IActionResult Delete(User user)
+        {
+            var result = _userService.Delete(user);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result);
+        }
+        [HttpPost("changePassword")]
+        public IActionResult ChangePassword(UserChangePasswordDto passwordDto)
+        {
+            var result = _userService.ChangePassword(passwordDto);
+            if (result.Success)
+            {
+                return Ok(result.Success);
+            }
+            return BadRequest(result.Message); 
+        }
+        
 
-    }
+    }   
 }

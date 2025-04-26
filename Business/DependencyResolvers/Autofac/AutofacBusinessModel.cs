@@ -1,8 +1,14 @@
 ﻿using Autofac;
-using Business.Abstract;
+using Autofac.Extras.DynamicProxy;
+using Business.Authentication;
 using Business.Concrete;
-using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
+using Business.Repositories.OperationClaimRepository;
+using Business.Repositories.UserOperationClaimRepository;
+using Business.Repositories.UserRepository;
+using Business.Repositories.Utilities.File;
+using Core.Utilities.Interceptors;
+using DataAccess.Repositories.OperationClaimRepository;
+using DataAccess.Repositories.UserRepository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,8 +30,14 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
+            builder.RegisterType<FileManager>().As<IFileService>();
             builder.RegisterType<AuthManager>().As<IAuthService>();
-
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new
+                Castle.DynamicProxy.ProxyGenerationOptions()
+            {
+                Selector = new AspectInterceptorSelector() 
+            }).SingleInstance();
         }
     }
 }

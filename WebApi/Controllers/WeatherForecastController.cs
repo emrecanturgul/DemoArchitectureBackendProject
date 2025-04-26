@@ -1,4 +1,4 @@
-using DataAccess.Concrete.EntityFramework.Control;
+using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using System.Data;
