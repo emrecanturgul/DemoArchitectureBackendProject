@@ -13,7 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=Emre\\SQLEXPRESS;Database=DemoDb;Integrated Security=true");
+            optionsBuilder.UseSqlServer("Server=Emre\\SQLEXPRESS;Database=DemoDb;Integrated Security=true;Encrypt=False;TrustServerCertificate=True;");
         }
         public DbSet<User>? Users { get; set; } 
         public DbSet<OperationClaim>? OperationClaims { get; set; }

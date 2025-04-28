@@ -13,6 +13,7 @@ namespace DataAccess.Repositories.OperationClaimRepository.Constants
         public static string Added = "yetki basariyla olusturuldu"; 
         public static string Update = "yetki basariyla guncellendi";
         public static string Delete = "yetki basariyla silindi";
-        
+        public static string IsNameAvailable = "Bu isimde bir yetki zaten mevcut";
+
     }
 }

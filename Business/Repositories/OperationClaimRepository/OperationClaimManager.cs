@@ -1,5 +1,6 @@
 ﻿using Business.Repositories.OperationClaimRepository;
 using Core.Utilities.Aspects.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.OperationClaimRepository;
@@ -24,7 +25,12 @@ namespace Business.Repositories.OperationClaimRepository
         }
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Add(OperationClaim operationClaim)
-        {
+        {   
+            IResult result = BusinessRules.Run(IsNameExistForAdd(operationClaim.Name));
+            if(result != null)
+            {
+                return result;
+            }
             _operationClaimDal.Add(operationClaim);
             return new SuccessResult(OperationClaimMessages.Added);
         }
@@ -46,9 +52,36 @@ namespace Business.Repositories.OperationClaimRepository
         }
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Update(OperationClaim operationClaim)
-        {
-           _operationClaimDal.Update(operationClaim);
+        {   IResult result = BusinessRules.Run(IsNameExistForUpdate(operationClaim));
+            if (result != null)
+            {
+                return result;
+            }
+            _operationClaimDal.Update(operationClaim);
             return new SuccessResult(OperationClaimMessages.Update);
         }
+
+        private IResult IsNameExistForAdd(string name)
+        {
+            var result = _operationClaimDal.Get(p => p.Name == name);
+            if (result != null)
+            {
+                return new ErrorResult(OperationClaimMessages.IsNameAvailable);
+            }
+            return new SuccessResult();
+        } 
+        private IResult IsNameExistForUpdate(OperationClaim operationClaim)
+        {   var currentOperationClaim = _operationClaimDal.Get(p => p.Id == operationClaim.Id);
+            if(currentOperationClaim.Name != operationClaim.Name)
+            {
+                var result = _operationClaimDal.Get(p => p.Name == operationClaim.Name);
+                if (result != null)
+                {   
+                    return new ErrorResult(OperationClaimMessages.IsNameAvailable);
+                }
+
+            }
+            return new SuccessResult();
+        } 
     }
 }
