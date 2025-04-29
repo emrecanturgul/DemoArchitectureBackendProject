@@ -7,6 +7,7 @@ using Business.Repositories.UserOperationClaimRepository;
 using Business.Repositories.UserRepository;
 using Business.Repositories.Utilities.File;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JWT;
 using DataAccess.Repositories.OperationClaimRepository;
 using DataAccess.Repositories.UserRepository;
 using System;
@@ -32,6 +33,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
             builder.RegisterType<FileManager>().As<IFileService>();
             builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<TokenHandler>().As<ITokenHandler>();
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new
                 Castle.DynamicProxy.ProxyGenerationOptions()

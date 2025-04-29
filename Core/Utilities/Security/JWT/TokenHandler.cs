@@ -1,10 +1,12 @@
-﻿using Entities.Concrete;
+﻿using Core.Extensions;
+using Entities.Concrete;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,5 +47,13 @@ namespace Core.Utilities.Security.JWT
                 return Convert.ToBase64String(number);
             }
         }
+        public IEnumerable<Claim> SetClaims(User user , List<OperationClaim> operationClaims)
+        {
+            var claims = new List<Claim>();
+            claims.AddName(user.Name);
+            claims.AddRoles(operationClaims.Select(p => p.Name).ToArray());
+            return claims; 
+        }
+        
     }
 }

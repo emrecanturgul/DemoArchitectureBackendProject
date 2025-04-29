@@ -18,7 +18,8 @@ namespace Business.Repositories.UserRepository
         IDataResult<List<User>> GetList(); 
         User GetByEmailAddress(string email);
         IDataResult<User> GetById(int id);
-        IResult ChangePassword(UserChangePasswordDto passwordDto); 
+        IResult ChangePassword(UserChangePasswordDto passwordDto);
+        List<OperationClaim> GetUserOperationClaims(int userId);
         
     }
 }

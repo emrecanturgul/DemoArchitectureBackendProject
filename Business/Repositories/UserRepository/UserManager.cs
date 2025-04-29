@@ -75,6 +75,7 @@ namespace Business.Repositories.UserRepository
             _userDal.Delete(user); 
             return new SuccessResult(UserMessages.DeletedUser); 
         }
+
         public IDataResult<User> GetById(int id) {
             return new SuccessDataResult<User>(_userDal.Get(p=>p.Id == id));
         }
@@ -93,6 +94,10 @@ namespace Business.Repositories.UserRepository
             user.PasswordSalt = passwordSalt;
             _userDal.Update(user);
             return new SuccessResult(UserMessages.UpdatedPassword);
+        }
+        public List<OperationClaim> GetUserOperationClaims(int userId)
+        {
+            return _userDal.userOperationClaims(userId);
         }
     }
 }

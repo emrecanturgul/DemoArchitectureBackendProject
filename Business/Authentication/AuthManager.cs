@@ -7,6 +7,8 @@ using Core.Utilities.Business;
 using Core.Utilities.Hashing;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
+using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.Dtos;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
@@ -23,20 +25,25 @@ namespace Business.Authentication
     public class AuthManager : IAuthService
     {
         private readonly IUserService _userService;
+        private readonly ITokenHandler _tokenHandler;
         public AuthManager(IUserService userService)
         {
             _userService = userService;
         }
 
-        public string Login(LoginAuthDto loginDto)
+        public IDataResult<Token> Login(LoginAuthDto loginDto)
         {
             var user = _userService.GetByEmailAddress(loginDto.Email);
             var result = HashingHelper.VerifyPasswordHash(loginDto.Password, user.PasswordHash, user.PasswordSalt);
+            List<OperationClaim> operationClaims = _userService.GetUserOperationClaims(user.Id);
             if (result == true)
             {
-                return "kullanıcı girişi başarılı";
+                Token token = new Token();
+                token = _tokenHandler.CreateToken(user, operationClaims);
+                return new SuccessDataResult<Token>(token, "kullanıcı girişi başarılı");
             }
-            return "kullanıcı bilgileri hatalı";
+            return new ErrorDataResult<Token>("kullanıcı adı veya şifre hatalı");
+
 
 
         }    

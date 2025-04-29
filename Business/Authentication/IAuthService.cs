@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
+using Core.Utilities.Security.JWT;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace Business.Authentication
      public interface IAuthService
     {
         IResult Register(RegisterAuthDto registerDto);
-        string Login(LoginAuthDto loginDto);
+        IDataResult<Token> Login(LoginAuthDto loginDto);
     }
 }
